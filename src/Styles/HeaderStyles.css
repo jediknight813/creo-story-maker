@@ -1,0 +1,37 @@
+* {
+    left: 0px;
+    top: 0px;
+}
+
+.header_container {
+    display: flex;
+    width: 100%;
+    position: absolute;
+    height: 80px;
+    background-color: tomato;
+    align-items: center;
+}
+
+.header_container h1{
+    color: white;
+    font-family: sans-serif;
+    font-weight: lighter;
+    margin-left: 12px;
+    width: 90%;
+}
+
+.header_container a{
+    cursor: pointer;
+    width: 10%;
+    color: white;
+    font-size: 50px;
+    right: 20px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header_container i:hover{
+    font-size: 52px;
+    transition: linear 0.4s;
+} 
