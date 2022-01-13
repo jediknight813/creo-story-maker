@@ -18,6 +18,7 @@
     font-weight: lighter;
     margin-left: 12px;
     width: 90%;
+    cursor: pointer;
 }
 
 .header_container a{
@@ -29,6 +30,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.header_container i{
+    transition-duration: 1s;
 }
 
 .header_container i:hover{

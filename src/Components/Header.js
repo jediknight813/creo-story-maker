@@ -9,7 +9,7 @@ function Header() {
         <div className="header_container">
             <h1>Creo Story Maker</h1>
             <a href="https://github.com/jediknight813">
-                <i class="fa fa-github-square"></i>
+                <i className="fa fa-github-square"></i>
             </a>
         </div>
     )

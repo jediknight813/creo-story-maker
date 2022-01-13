@@ -1,3 +1,5 @@
+
+/* get gamedata input css */
 .required_info_for_crea_container {
     width: 100%;
     height: 92%;
@@ -34,7 +36,7 @@
 .required_info_for_crea_column_container div input{
     outline: none;
     border: none;
-    width: 80%;
+    width: 100%;
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
 }
@@ -50,10 +52,10 @@
     font-weight: bold;
 }
 
-
+/* navbar css */
 .navbar_container {
     width: 100%;
-    height: 40px;
+    height: 50px;
     display: flex;
     position: absolute;
     margin-top: 80px;
@@ -61,21 +63,269 @@
 }
 
 .navbar_container button{
-    height: 80%;
-    color: white;
+    height: 70%;
+    color: tomato;
     border-radius: 10px;
     padding: 5px;
     border: none;
-    background-color: tomato;
+    background-color: rgb(255, 255, 255);
+    border: solid 2px tomato;
     font-family: sans-serif;
     font-weight: lighter;
     margin-left: 20px;
     cursor: pointer;
     margin-right: 20px;
+    transition-duration: 1s;
 }
 
 .navbar_container button:hover {
-    font-weight: bold;
-    padding: 10px;
+    font-size: 14px;
+    padding-right: 10px;
+    padding-left: 10px;
     transition: linear 0.3s;
+}
+
+.navbar_container button:hover:after{
+    transition: linear 0.3s;
+}
+
+
+/* action container css */
+
+.action_parent_container {
+    height: 900px;
+    background-color: rgb(244, 240, 240);
+    border: tomato solid 4px;
+    width: 32%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    margin-top: 130px;
+    border-radius: 5px;
+    margin-left: 20px;
+}
+
+.action_parent_container h1{
+    color: tomato;
+    font-family: sans-serif;
+}
+
+.action_type_button_container {
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+}
+
+.action_type_button_container button {
+    border: none;
+    color: tomato;
+    background-color: white;
+    font-family: sans-serif;
+    border-radius: 5px;
+    border: solid tomato 2px;
+    margin: 8px;
+    margin-top: 0px;
+    font-size: 25px;
+    transition-duration: 1s;
+}
+
+.action_type_button_container button:hover{
+    padding-left: 10px;
+    padding-right: 10px;
+    transition: linear 0.3s;
+
+}
+
+.actions_sorter_and_container {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    height: 650px;
+    margin-top: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.small_actions_background_container {
+    width: 98%;
+    min-height: 200px;
+    border-radius: 5px;
+    border: tomato solid 4px;
+    display: flex;
+    flex-direction: column;
+    color: tomato;
+    align-items: center;
+}
+
+.small_actions_background_container div {
+    display: flex;
+    width: 90%;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: -20px;
+}
+
+.small_actions_background_container div select {
+    width: 150px;
+    height: 30px;
+    border: 2px solid tomato;
+    margin-right: 10px;
+    outline: none;
+    color: tomato;
+}
+
+.small_actions_background_container div input {
+    width: 120px;
+    height: 25px;
+    border: 2px solid tomato;
+    outline: none;
+    color: tomato;
+} 
+
+.small_actions_background_container div h2{
+    margin-right: 10px;
+    margin-left: 10px;
+    font-family: sans-serif;
+    font-weight: lighter;
+}
+
+.small_actions_background_container button {
+    border: none;
+    color: tomato;
+    background-color: white;
+    font-family: sans-serif;
+    border-radius: 5px;
+    border: solid tomato 2px;
+    margin: 8px;
+    margin-top: 0px;
+    font-size: 20px;
+    transition-duration: 1s;
+}
+
+.small_actions_background_container button:hover{
+    padding-left: 10px;
+    padding-right: 10px;
+    transition: linear 0.3s;
+
+}
+
+
+/* act and scene container css */
+
+.acts_and_scenes_container {
+    height: 900px;
+    background-color: rgb(244, 240, 240);
+    border: tomato solid 4px;
+    width: 32%;
+    position: absolute;
+    margin-left: 66.5%;
+    margin-top: 130px;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.acts_and_scenes_container h1{
+    color: tomato;
+    font-family: sans-serif;
+}
+
+
+.acts_container {
+    height: 300px;
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    overflow-y: auto;
+}
+
+.scenes_container {
+    height: 370px;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    overflow-y: auto;
+}
+
+.acts_and_scenes_container button{
+    border: none;
+    color: tomato;
+    background-color: white;
+    font-family: sans-serif;
+    border-radius: 5px;
+    border: solid tomato 2px;
+    margin: 8px;
+    margin-top: 15px;
+    font-size: 20px;
+    transition-duration: 1s;
+}
+
+.acts_and_scenes_container button:hover{
+    padding-left: 10px;
+    padding-right: 10px;
+    transition: linear 0.3s;
+
+}
+
+.add_act_button_container {
+    width: 80%;
+    display: flex;
+    height: 10%;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.add_act_button_container input{
+    width: 80%;
+    height: 80%;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    border: solid tomato 2px;
+    color: tomato;
+    outline: none;
+}
+
+.add_act_button_container button{
+    background-color: tomato;
+    color: white;
+    border-radius: 0px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    border: none;
+    margin-top: 8px;
+    margin-left: 0px;
+    height: 100%;
+    width: 20%;
+}
+
+.add_act_button_container button:hover{
+    transition: linear 0.3s;
+    font-size: 22px;
+}
+
+.act_and_scene_item_container {
+    width: 95%;
+    margin-top: 0px;
+    height: 50px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+
+.act_and_scene_item_container h1{
+    font-size: 20px;
+    font-weight: lighter;
 }
