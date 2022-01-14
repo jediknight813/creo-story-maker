@@ -151,8 +151,9 @@
 }
 
 .small_actions_background_container {
-    width: 98%;
-    min-height: 200px;
+    width: 470px;
+    min-height: 250px;
+    margin-bottom: 50px;
     border-radius: 5px;
     border: tomato solid 4px;
     display: flex;
@@ -295,6 +296,7 @@
     outline: none;
 }
 
+
 .add_act_button_container button{
     background-color: tomato;
     color: white;
@@ -313,6 +315,11 @@
     font-size: 22px;
 }
 
+.selected_class_button {
+    transition: linear 0.4s;
+}
+
+
 .act_and_scene_item_container {
     width: 95%;
     margin-top: 0px;
@@ -328,4 +335,64 @@
 .act_and_scene_item_container h1{
     font-size: 20px;
     font-weight: lighter;
+}
+
+
+/* current scene data css */
+
+
+.current_scene_parent_container {
+    height: 900px;
+    background-color: rgb(244, 240, 240);
+    border: tomato solid 4px;
+    width: 33%;
+    position: absolute;
+    margin-left: 33.4%;
+    border-radius: 2px;
+    margin-top: 130px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.current_scene_parent_container h1{
+    color: tomato;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+.display_current_scene_actions_parent_container {
+    width: 90%;
+    height: 85%;
+    color: tomato;
+    font-family: sans-serif;
+    word-break: break-all;
+    white-space: normal;
+}
+
+
+/* editible action containers */
+
+
+.editible_action_container {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+}
+
+.edit_action_buttons_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    margin-top: 20px;
+    margin-left: 50px;
+}
+.edit_action_buttons_container button{
+    margin-top: 20px;
+    font-size: 17px;
 }
