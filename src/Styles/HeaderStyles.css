@@ -10,6 +10,7 @@
     height: 80px;
     background-color: tomato;
     align-items: center;
+    z-index: 8;
 }
 
 .header_container h1{

@@ -1,4 +1,3 @@
-import { isElementType } from "@testing-library/user-event/dist/utils";
 import React, { useState } from "react";
 import '../Styles/CreoStoryMakerStyles.css'
 
@@ -32,12 +31,24 @@ function CreoStoryMaker() {
     }
 
 
+    function return_all_scenes_list() {
+        let all_scenes = []
+        for (let a in story_data) {
+            for (let i in story_data[a]) {
+                for (let j in story_data[a][i]) {
+                    all_scenes.push(j)
+                }
+            }
+        }  
+       return all_scenes
+    }
+
     const [force_update, start_force_update] = useState(1)
 
 
     function remove_action_from_scene(action_id) {
         let data_to_update = story_data
-        console.log(action_id)
+        //console.log(action_id)
 
         for (let index in story_data[current_act]) {
             for (let act_index in story_data[current_act][index]) {
@@ -261,12 +272,69 @@ function move_action_up_in_scene(updated_action) {
             document.getElementById("dialog_action_dialog_text").value = ""
             start_force_update(force_update+1)
         }
+
+        if (action_type === "background_action_background") {
+            let background = document.getElementById("background_action_background").value
+            add_action_data_to_scene({"background": background, "action_id": Math.random().toString(20).substring(2, 10) + Math.random().toString(20).substring(2, 10), "type": "background_action_background"})        
+            start_force_update(force_update+1)
+        }
+
+        if (action_type === "audio_action_play_audio") {
+            let audio = document.getElementById("audio_action_play_audio").value
+            add_action_data_to_scene({"play_audio": audio, "action_id": Math.random().toString(20).substring(2, 10) + Math.random().toString(20).substring(2, 10), "type": "audio_action_play_audio"})
+            start_force_update(force_update+1)
+        }
+
+        if (action_type === "audio_action_stop_audio") {
+            let audio = document.getElementById("audio_action_stop_audio").value
+            add_action_data_to_scene({"stop_audio": audio, "action_id": Math.random().toString(20).substring(2, 10) + Math.random().toString(20).substring(2, 10), "type": "audio_action_play_audio"})
+            start_force_update(force_update+1)
+        }
+
+        if (action_type === "character_action_show_character") {
+            let sprite = document.getElementById("character_action_show_character_sprite").value
+            let position = document.getElementById("character_action_show_character_position").value
+            let expression = document.getElementById("character_action_show_character_expression").value
+            add_action_data_to_scene({"character": sprite, "position": position, "expression": expression, "action_id": Math.random().toString(20).substring(2, 10) + Math.random().toString(20).substring(2, 10), "type": "character_action_show_character"}) 
+            start_force_update(force_update+1)
+        }
+
+        if (action_type === "character_action_hide_character_sprite") {
+            let character = document.getElementById("character_action_hide_character_sprite").value
+            add_action_data_to_scene({"hide_character": character, "action_id": Math.random().toString(20).substring(2, 10) + Math.random().toString(20).substring(2, 10), "type": "character_action_hide_character_sprite"})
+            start_force_update(force_update+1)
+        }
+
+        if (action_type === "choice_action_choice") {
+            let choice_one_text = document.getElementById("choice_action_choice_one_text").value
+            let choice_two_text = document.getElementById("choice_action_choice_two_text").value
+            let choice_one_scene = document.getElementById("choice_action_choice_one_scene").value
+            let choice_two_scene = document.getElementById("choice_action_choice_two_scene").value
+            add_action_data_to_scene({"choice_one_text": choice_one_text, "choice_two_text": choice_two_text, "choice_one_scene": choice_one_scene, "choice_two_scene": choice_two_scene, "action_id": Math.random().toString(20).substring(2, 10) + Math.random().toString(20).substring(2, 10), "type": "choice_action_choice"}) 
+            start_force_update(force_update+1)
+        }
+
+        if (action_type === "influence_action_add_or_remove_influence") {
+            let character = document.getElementById("influence_action_add_or_remove_influence_character").value
+            let amount = document.getElementById("influence_action_add_or_remove_influence_amount").value
+            add_action_data_to_scene({"influence_amount": amount, "character": character, "action_id": Math.random().toString(20).substring(2, 10) + Math.random().toString(20).substring(2, 10), "type": "influence_action_add_or_remove_influence"}) 
+            start_force_update(force_update+1)
+        }
+
+        if (action_type === "influence_action_influence_check") {
+            let character = document.getElementById("influence_action_influence_check_character").value
+            let amount = document.getElementById("influence_action_influence_check_amount").value
+            let pass_scene = document.getElementById("influence_action_influence_check_pass_scene").value
+            let fail_scene = document.getElementById("influence_action_influence_check_fail_scene").value
+            add_action_data_to_scene({"influence_event_check": amount, "character": character, "pass": pass_scene, "fail": fail_scene, "action_id": Math.random().toString(20).substring(2, 10) + Math.random().toString(20).substring(2, 10), "type": "influence_action_influence_check"}) 
+            start_force_update(force_update+1)
+        }
+
     }
 
 
     function copy_all_story_data_to_clipboard() {
         let data_to_copy_to_clipboard = ""
-        let all_scenes = {}
         for (let a in story_data) {
             for (let i in story_data[a]) {
                 for (let j in story_data[a][i]) {
@@ -277,15 +345,10 @@ function move_action_up_in_scene(updated_action) {
                         story_data[a][i][j][c]["order_id"] = count
                         count += 1
                     }
-                    all_scenes[j] = j
                 }
             }
         }  
-
-        data_to_copy_to_clipboard += "\n" + "\n" + "var " + "all_Scenes = " + JSON.stringify(all_scenes)
-        //console.log(data_to_copy_to_clipboard)
         navigator.clipboard.writeText(data_to_copy_to_clipboard)
-
     }
 
 
@@ -299,8 +362,7 @@ function move_action_up_in_scene(updated_action) {
                 }
             }
         }
-        
-        console.log(data_to_return)
+        //console.log(data_to_return)
         return data_to_return      
     }
 
@@ -352,8 +414,280 @@ function move_action_up_in_scene(updated_action) {
                 </div>
             )
         }
+        if (action_data.data['type'] === "background_action_background") {
+            return (
+                <div style={{minHeight: "160px"}} className="small_actions_background_container">
+                <h2> Change Background  </h2>
+
+                <div>
+                    <h2> Backgrounds </h2>
+                    <select onChange={(event) => action_data.data["background"] = event.target.value} defaultValue={action_data.data["background"]}>
+                        {obj["backgrounds"].map(Element =>
+                            <option key={Element} value={Element}> {Element} </option>
+                        )}
+                    </select>
+
+                </div>
+
+                        <div className="edit_action_buttons_container">
+                        <button onClick={() => update_action_in_scene(action_data.data)}> update </button>
+                        <button onClick={() => remove_action_from_scene(action_data.data["action_id"])}> remove </button>
+                        <button onClick={() => move_action_up_in_scene(action_data.data)}> move up </button>
+                        <button onClick={() => move_action_down_in_scene(action_data.data)}> move down</button>
+                    </div>
+                
+                </div>
+            )
+        }
+
+        if (action_data.data["type"] === "audio_action_play_audio") {
+            return (
+                <div style={{minHeight: "160px"}} className="small_actions_background_container">
+                <h2> Play Audio  </h2>
+
+                <div>
+                    <h2> Audio </h2>
+                    <select onChange={(event) => action_data.data["play_audio"] = event.target.value} defaultValue={action_data.data["play_audio"]}>
+                        {obj["sounds"].map(Element =>
+                            <option key={Element} value={Element}> {Element} </option>
+                        )}
+                    </select>
+
+                </div>
+
+                        <div className="edit_action_buttons_container">
+                        <button onClick={() => update_action_in_scene(action_data.data)}> update </button>
+                        <button onClick={() => remove_action_from_scene(action_data.data["action_id"])}> remove </button>
+                        <button onClick={() => move_action_up_in_scene(action_data.data)}> move up </button>
+                        <button onClick={() => move_action_down_in_scene(action_data.data)}> move down</button>
+                    </div>
+                
+                </div>
+            )
+        }
 
 
+        if (action_data.data["type"] === "audio_action_stop_audio") {
+            return (
+                <div style={{minHeight: "160px"}} className="small_actions_background_container">
+                <h2> Stop Audio </h2>
+
+                <div>
+                    <h2> Audio </h2>
+                    <select onChange={(event) => action_data.data["stop_audio"] = event.target.value} defaultValue={action_data.data["stop_audio"]}>
+                        {obj["sounds"].map(Element =>
+                            <option key={Element} value={Element}> {Element} </option>
+                        )}
+                    </select>
+
+                </div>
+
+                    <div className="edit_action_buttons_container">
+                        <button onClick={() => update_action_in_scene(action_data.data)}> update </button>
+                        <button onClick={() => remove_action_from_scene(action_data.data["action_id"])}> remove </button>
+                        <button onClick={() => move_action_up_in_scene(action_data.data)}> move up </button>
+                        <button onClick={() => move_action_down_in_scene(action_data.data)}> move down</button>
+                    </div>
+                
+                </div>
+            )
+            
+        }
+
+        if (action_data.data["type"] === "character_action_show_character") {
+            return (
+                <div className="small_actions_background_container">
+                    <h2> Show Character </h2>
+
+                    <div>
+                        <h2> sprite </h2>
+                        <select onChange={(event) => action_data.data["character"] = event.target.value} defaultValue={action_data.data["character"]}>
+                            {obj["names"].map(Element =>
+                                <option key={Element} value={Element}> {Element} </option>
+                            )}
+                        </select>
+                    </div>
+
+
+                    <div>
+                        <h2> position </h2>
+                        <select onChange={(event) => action_data.data["position"] = event.target.value} defaultValue={action_data.data["position"]}>
+                            <option value="one">one</option>
+                            <option value="two">two</option>
+                            <option value="three">three</option>
+                            <option value="four">four</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <h2> expression </h2>
+                        <select onChange={(event) => action_data.data["expression"] = event.target.value} defaultValue={action_data.data["expression"]}>
+                            {obj["expressions"].map(Element =>
+                                <option key={Element} value={Element}> {Element} </option>
+                            )}
+                        </select>
+                    </div>
+
+                    <div className="edit_action_buttons_container">
+                            <button onClick={() => update_action_in_scene(action_data.data)}> update </button>
+                            <button onClick={() => remove_action_from_scene(action_data.data["action_id"])}> remove </button>
+                            <button onClick={() => move_action_up_in_scene(action_data.data)}> move up </button>
+                            <button onClick={() => move_action_down_in_scene(action_data.data)}> move down</button>
+                    </div>
+
+
+                </div>
+                )
+            }
+
+            if (action_data.data["type"] === "choice_action_choice") {
+                return(
+                    <div style={{minHeight: "300px"}} className="small_actions_background_container">
+                            <h2> Choice </h2>
+
+                            <div>
+                                <h2> Choice One </h2> 
+                                <input onChange={(event) => action_data.data["choice_one_text"] = event.target.value}  defaultValue={action_data.data["choice_one_text"]} type={"text"} style={{minWidth: "215px"}}/>
+                            </div>
+
+                            <div>
+                                <h2> Choice Two </h2>
+                                <input onChange={(event) => action_data.data["choice_two_text"] = event.target.value}  defaultValue={action_data.data["choice_two_text"]} type={"text"} style={{minWidth: "215px"}}/>
+                            </div>
+
+                            <div>
+                                <h2> Choice One Scene </h2>
+                                <select onChange={(event) => action_data.data["choice_one_scene"] = event.target.value} defaultValue={action_data.data["choice_one_scene"]}>
+                                    {return_all_scenes_list().map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+                            </div>
+
+                            <div>
+                                <h2> Choice Two Scene </h2>
+                                <select onChange={(event) => action_data.data["choice_two_scene"] = event.target.value} defaultValue={action_data.data["choice_two_scene"]}>
+                                    {return_all_scenes_list().map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+                            </div>
+
+                            <div className="edit_action_buttons_container">
+                                <button onClick={() => update_action_in_scene(action_data.data)}> update </button>
+                                <button onClick={() => remove_action_from_scene(action_data.data["action_id"])}> remove </button>
+                                <button onClick={() => move_action_up_in_scene(action_data.data)}> move up </button>
+                                <button onClick={() => move_action_down_in_scene(action_data.data)}> move down</button>
+                            </div>
+
+                        </div>
+                )
+        }
+
+        if (action_data.data["type"] === "character_action_hide_character_sprite") {
+
+            return( 
+                <div style={{minHeight: "160px"}} className="small_actions_background_container">
+                <h2> Hide Character </h2>
+
+                <div>
+                    <h2> Audio </h2>
+                    <select onChange={(event) => action_data.data["hide_character"] = event.target.value} defaultValue={action_data.data["hide_character"]}>
+                        {obj["names"].map(Element =>
+                            <option key={Element} value={Element}> {Element} </option>
+                        )}
+                    </select>
+
+                </div>
+
+                    <div className="edit_action_buttons_container">
+                        <button onClick={() => update_action_in_scene(action_data.data)}> update </button>
+                        <button onClick={() => remove_action_from_scene(action_data.data["action_id"])}> remove </button>
+                        <button onClick={() => move_action_up_in_scene(action_data.data)}> move up </button>
+                        <button onClick={() => move_action_down_in_scene(action_data.data)}> move down</button>
+                    </div>
+                
+                </div>
+            )
+        }
+
+        if (action_data.data["type"] === "influence_action_add_or_remove_influence") {
+            return (
+                <div style={{minHeight: "200px"}} className="small_actions_background_container">
+                    <h2> influence </h2>
+
+                    <div>
+                        <h2> Character </h2>
+                        <select onChange={(event) => action_data.data["character"] = event.target.value} defaultValue={action_data.data["character"]}>
+                            {obj["names"].map(Element =>
+                                <option key={Element} value={Element}> {Element} </option>
+                            )}
+                        </select>
+
+                    </div>
+
+                    <div>
+                    <h2> Amount </h2> 
+                        <input onChange={(event) => action_data.data["influence_amount"] = event.target.value} defaultValue={action_data.data["influence_amount"]} type={"number"} />
+                    </div>
+
+                    <div className="edit_action_buttons_container">
+                        <button onClick={() => update_action_in_scene(action_data.data)}> update </button>
+                        <button onClick={() => remove_action_from_scene(action_data.data["action_id"])}> remove </button>
+                        <button onClick={() => move_action_up_in_scene(action_data.data)}> move up </button>
+                        <button onClick={() => move_action_down_in_scene(action_data.data)}> move down</button>
+                    </div>
+                </div>
+            )
+        }
+
+        if (action_data.data["type"] === "influence_action_influence_check") {
+            return (
+                <div style={{minHeight: "300px"}} className="small_actions_background_container">
+                            <h2> Influence Check </h2>
+
+                            <div>
+                                <h2> Character </h2> 
+                                <select onChange={(event) => action_data.data["characer"] = event.target.value} defaultValue={action_data.data["character"]}>
+                                    {obj["names"].map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+                            </div>
+
+                            <div>
+                                <h2> Influence Needed </h2>
+                                <input onChange={(event) => action_data.data["influence_event_check"] = event.target.value} defaultValue={action_data.data["influence_event_check"]} style={{minWidth: "50px"}} type={"number"} />
+                            </div>
+
+                            <div>
+                                <h2> Influence Pass Scene </h2>
+                                <select onChange={(event) => action_data.data["pass"] = event.target.value} defaultValue={action_data.data["pass"]} style={{minWidth: "50px"}} type={"number"}>
+                                    {return_all_scenes_list().map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+                            </div>
+
+                            <div>
+                                <h2> Influence Fail Scene  </h2>
+                                <select onChange={(event) => action_data.data["fail"] = event.target.value} defaultValue={action_data.data["fail"]} style={{minWidth: "50px"}} type={"number"}>
+                                    {return_all_scenes_list().map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+                            </div>
+
+                            <div className="edit_action_buttons_container">
+                                <button onClick={() => update_action_in_scene(action_data.data)}> update </button>
+                                <button onClick={() => remove_action_from_scene(action_data.data["action_id"])}> remove </button>
+                                <button onClick={() => move_action_up_in_scene(action_data.data)}> move up </button>
+                                <button onClick={() => move_action_down_in_scene(action_data.data)}> move down</button>
+                            </div>
+                            
+                        </div>
+            )
+        }
 
 
 
@@ -373,12 +707,12 @@ function move_action_up_in_scene(updated_action) {
                         
                         
                         <div className="small_actions_background_container">
-                            <h2> dialog </h2>
+                            <h2> Dialog </h2>
 
                             <div>
-                                <h2> name </h2> 
+                                <h2> Name </h2> 
                                 <input id="dialog_action_name" type={"text"} />
-                                <h2> sprite </h2>
+                                <h2> Sprite </h2>
 
                                 <select id="dialog_action_sprite">
                                     {obj["names"].map(Element =>
@@ -389,12 +723,12 @@ function move_action_up_in_scene(updated_action) {
                             </div>
 
                             <div>
-                                <h2> dialog </h2> 
+                                <h2> Dialog </h2> 
                                 <input id="dialog_action_dialog_text" style={{width: "75%"}} type={"text"} />
                             </div>
 
                             <div>
-                                <h2> expressions </h2>
+                                <h2> Expression </h2>
                                 <select id="dialog_action_expression">
                                     {obj["expressions"].map(Element =>
                                         <option key={Element} value={Element}> {Element} </option>
@@ -402,18 +736,34 @@ function move_action_up_in_scene(updated_action) {
                                 </select>
                             </div>
 
-                            <button onClick={() => get_action_data_and_send_it_to_be_added_to_scene("dialog")}> add </button>
+                            <button onClick={() => get_action_data_and_send_it_to_be_added_to_scene("dialog")}> add action </button>
 
                         </div>
 
                     </div>
                 )
+                
             }
 
             if (current_action_type === "background") {
                 return(
                     <div className="actions_sorter_and_container">
-                        
+                         <div style={{minHeight: "15%"}} className="small_actions_background_container">
+                            <h2> Change Background  </h2>
+
+                            <div>
+                                <h2> Backgrounds </h2>
+                                <select id="background_action_background">
+                                    {obj["backgrounds"].map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+
+                            </div>
+
+                                <button onClick={() => get_action_data_and_send_it_to_be_added_to_scene("background_action_background")}> add action </button>
+                            
+                            </div>
                     </div>
                 )
             }
@@ -421,6 +771,42 @@ function move_action_up_in_scene(updated_action) {
             if (current_action_type === "sound") {
                 return(
                     <div className="actions_sorter_and_container">
+                        
+                        <div style={{minHeight: "15%"}} className="small_actions_background_container">
+                            <h2> Play Audio  </h2>
+
+                            <div>
+                                <h2> Audio </h2>
+                                <select id="audio_action_play_audio">
+                                    {obj["sounds"].map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+
+                            </div>
+
+                                <button onClick={() => get_action_data_and_send_it_to_be_added_to_scene("audio_action_play_audio")}> add action </button>
+                            
+                            </div>
+
+
+                            <div style={{minHeight: "15%"}} className="small_actions_background_container">
+                                <h2> Stop Audio  </h2>
+
+                                <div>
+                                    <h2> Audio </h2>
+                                    <select id="audio_action_stop_audio">
+                                        {obj["sounds"].map(Element =>
+                                            <option key={Element} value={Element}> {Element} </option>
+                                        )}
+                                    </select>
+
+                                </div>
+
+                                    <button onClick={() => get_action_data_and_send_it_to_be_added_to_scene("audio_action_stop_audio")}> add action </button>
+                                
+                            </div>
+                        
 
                     </div>
                 )
@@ -430,6 +816,70 @@ function move_action_up_in_scene(updated_action) {
                 return(
                     <div className="actions_sorter_and_container">
 
+                        <div className="small_actions_background_container">
+                            <h2> Influence Check </h2>
+
+                            <div>
+                                <h2> Character </h2> 
+                                <select id="influence_action_influence_check_character">
+                                    {obj["names"].map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+                            </div>
+
+                            <div>
+                                <h2> Influence Needed </h2>
+                                <input style={{minWidth: "50px"}} id="influence_action_influence_check_amount" type={"number"} />
+                            </div>
+
+                            <div>
+                                <h2> Influence Pass Scene </h2>
+                                <select id="influence_action_influence_check_pass_scene">
+                                    {return_all_scenes_list().map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+                            </div>
+
+                            <div>
+                                <h2> Influence Fail Scene  </h2>
+                                <select id="influence_action_influence_check_fail_scene">
+                                    {return_all_scenes_list().map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+                            </div>
+
+                            <button onClick={() => get_action_data_and_send_it_to_be_added_to_scene("influence_action_influence_check")}> add action </button>
+
+                        </div>
+
+
+
+                        <div style={{minHeight: "15%"}} className="small_actions_background_container">
+                            <h2> influence </h2>
+
+                            <div>
+                                <h2> Character </h2>
+                                <select id="influence_action_add_or_remove_influence_character">
+                                    {obj["names"].map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+
+                            </div>
+
+                            <div>
+                            <h2> Amount </h2> 
+                                <input id="influence_action_add_or_remove_influence_amount" type={"number"} />
+                            </div>
+
+                                <button onClick={() => get_action_data_and_send_it_to_be_added_to_scene("influence_action_add_or_remove_influence")}> add action </button>
+                            
+                        </div>
+
+
                     </div>
                 )
             }
@@ -437,6 +887,105 @@ function move_action_up_in_scene(updated_action) {
             if (current_action_type === "choice") {
                 return(
                     <div className="actions_sorter_and_container">
+
+                        <div className="small_actions_background_container">
+                            <h2> Choice </h2>
+
+                            <div>
+                                <h2> Choice One </h2> 
+                                <input style={{minWidth: "215px"}} id="choice_action_choice_one_text" type={"text"} />
+                            </div>
+
+                            <div>
+                                <h2> Choice Two </h2>
+                                <input style={{minWidth: "220px"}} id="choice_action_choice_two_text" type={"text"} />
+                            </div>
+
+                            <div>
+                                <h2> Choice One Scene </h2>
+                                <select id="choice_action_choice_one_scene">
+                                    {return_all_scenes_list().map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+                            </div>
+
+                            <div>
+                                <h2> Choice Two Scene </h2>
+                                <select id="choice_action_choice_two_scene">
+                                    {return_all_scenes_list().map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+                            </div>
+
+                            <button onClick={() => get_action_data_and_send_it_to_be_added_to_scene("choice_action_choice")}> add action </button>
+
+                        </div>
+
+                    </div>
+
+                )
+            }
+
+            if (current_action_type === "character") {
+                return(
+                    <div className="actions_sorter_and_container">
+                                         
+                        <div className="small_actions_background_container">
+                            <h2> Show Character </h2>
+
+                            <div>
+                                <h2> sprite </h2>
+                                <select id="character_action_show_character_sprite">
+                                    {obj["names"].map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+                            </div>
+
+
+                            <div>
+                                <h2> position </h2>
+                                <select id="character_action_show_character_position">
+                                    <option value="one">one</option>
+                                    <option value="two">two</option>
+                                    <option value="three">three</option>
+                                    <option value="four">four</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <h2> expression </h2>
+                                <select id="character_action_show_character_expression">
+                                    {obj["expressions"].map(Element =>
+                                        <option key={Element} value={Element}> {Element} </option>
+                                    )}
+                                </select>
+                            </div>
+
+                            <button onClick={() => get_action_data_and_send_it_to_be_added_to_scene("character_action_show_character")}> add action </button>
+
+                        </div>
+
+                        
+                        <div style={{minHeight: "15%"}} className="small_actions_background_container">
+                                <h2> Hide Character  </h2>
+
+                                <div>
+                                    <h2> Character </h2>
+                                    <select id="character_action_hide_character_sprite">
+                                        {obj["names"].map(Element =>
+                                            <option key={Element} value={Element}> {Element} </option>
+                                        )}
+                                    </select>
+
+                                </div>
+
+                                    <button onClick={() => get_action_data_and_send_it_to_be_added_to_scene("character_action_hide_character_sprite")}> add action </button>
+                                
+                            </div>
+                        
 
                     </div>
                 )
@@ -490,7 +1039,19 @@ function move_action_up_in_scene(updated_action) {
 
             <div className="navbar_container">
                 <button onClick={() => set_required_info_submited(false)}> resubmit game data </button>
-                <button> documentation </button>
+                <button> documentation</button>
+                <button onClick={() => navigator.clipboard.writeText("[b][/b]")}> Bold Text </button>
+                <button onClick={() => navigator.clipboard.writeText("[wave amp=50 freq=2][/wave]")}> Wavy Text </button>
+                <button onClick={() => navigator.clipboard.writeText("[tornado radius=5 freq=2][/tornado]")}> Tornado Text </button>
+                <button onClick={() => navigator.clipboard.writeText("[shake rate=5 level=10][/shake]")}> Shaking Text </button>
+                <button onClick={() => navigator.clipboard.writeText("[fade start=4 length=14][/fade]")}> Fading Text </button>
+                <button onClick={() => navigator.clipboard.writeText("[rainbow freq=0.2 sat=10 val=20][/rainbow]")}> Rainbow Text </button>
+                <button style={{"border": "2px solid blue", "color": "blue"}} onClick={() => navigator.clipboard.writeText("[color=blue][/color]")}> Blue Text </button>
+                <button style={{"border": "2px solid green", "color": "green"}} onClick={() => navigator.clipboard.writeText("[color=green][/color]")}> Green Text </button>
+                <button style={{"border": "2px solid red", "color": "red"}} onClick={() => navigator.clipboard.writeText("[color=red][/color]")}> Red Text </button>
+                <button style={{"border": "2px solid purple", "color": "purple"}} onClick={() => navigator.clipboard.writeText("[color=purple][/color]")}> Purple Text </button>
+                <button style={{"border": "2px solid #fa6149", "color": "#fa6149"}} onClick={() => navigator.clipboard.writeText("[color=#fa6149][/color]")}> Orange Text </button>
+                
             </div>
 
 
@@ -498,11 +1059,12 @@ function move_action_up_in_scene(updated_action) {
                 <h1> Actions </h1>
 
                 <div className="action_type_button_container">
-                    <button onClick={() => set_current_action_type("background")}> background </button>
-                    <button onClick={() => set_current_action_type("dialog")}> dialog </button>
-                    <button onClick={() => set_current_action_type("sound")}> sound </button>
-                    <button onClick={() => set_current_action_type("influence")}> influence </button>
-                    <button onClick={() => set_current_action_type("choice")}> choice </button>
+                    <button onClick={() => set_current_action_type("background")}> Background </button>
+                    <button onClick={() => set_current_action_type("dialog")}> Dialog </button>
+                    <button onClick={() => set_current_action_type("sound")}> Audio </button>
+                    <button onClick={() => set_current_action_type("influence")}> Influence </button>
+                    <button onClick={() => set_current_action_type("choice")}> Choice </button>
+                    <button onClick={() => set_current_action_type("character")}> Character </button>
                 </div> 
 
 
@@ -517,6 +1079,10 @@ function move_action_up_in_scene(updated_action) {
 
                 <div className="acts_container">
 
+                    <div className="add_act_button_container">
+                        <input id="act_name_id" type={"text"}/>
+                        <button onClick={() => add_act_to_story_data(document.getElementById("act_name_id").value)}> add </button>
+                    </div>
 
                     {put_all_acts_onto_list().map(Element =>
                         <div className="act_and_scene_item_container"> 
@@ -526,17 +1092,17 @@ function move_action_up_in_scene(updated_action) {
                         </div>
                     )}
 
-
-                    <div className="add_act_button_container">
-                        <input id="act_name_id" type={"text"}/>
-                        <button onClick={() => add_act_to_story_data(document.getElementById("act_name_id").value)}> add </button>
-                    </div>
                     
                 </div>
 
                 <h1> Scenes </h1>
 
                 <div className="scenes_container">
+
+                    <div className="add_act_button_container">
+                        <input id="scene_name_id" type={"text"}/>
+                        <button onClick={() => add_scene_to_current_act(document.getElementById("scene_name_id").value)}> add </button>
+                    </div>
                     
                     {put_current_act_scenes_into_list().map(Element =>
 
@@ -547,12 +1113,6 @@ function move_action_up_in_scene(updated_action) {
                         </div>
 
                     )}
-
-
-                    <div className="add_act_button_container">
-                        <input id="scene_name_id" type={"text"}/>
-                        <button onClick={() => add_scene_to_current_act(document.getElementById("scene_name_id").value)}> add </button>
-                    </div>
 
                 </div>
 
@@ -573,7 +1133,7 @@ function move_action_up_in_scene(updated_action) {
 
 
 
-            <h1 style={{marginTop: "4000px", position: "absolute"}}> hello </h1>
+            <h1 style={{marginTop: "4000px", position: "absolute"}}> nothing to see down here </h1>
         </div>
     )
 }
