@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/creo-story-maker/static/css/main.b13bb894.css",
+    "main.js": "/creo-story-maker/static/js/main.cffb78b7.js",
+    "index.html": "/creo-story-maker/index.html",
+    "main.b13bb894.css.map": "/creo-story-maker/static/css/main.b13bb894.css.map",
+    "main.cffb78b7.js.map": "/creo-story-maker/static/js/main.cffb78b7.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b13bb894.css",
+    "static/js/main.cffb78b7.js"
+  ]
+}
