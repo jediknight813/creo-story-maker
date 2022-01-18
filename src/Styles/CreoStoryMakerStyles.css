@@ -395,3 +395,26 @@
     margin-top: 20px;
     font-size: 17px;
 }
+
+
+/* choice test css */
+
+.ChoiceTestParentContainer {
+    min-width: 110%;
+    height: 70%;
+    display: flex;
+    overflow-y: auto;
+    flex-direction: column;
+}
+
+.ChoiceTestParentContainer select{
+    max-width: 100px;
+    margin-left: 10px;
+
+}
+
+.ChoiceTestParentContainer input{
+    min-width: 10px;
+    margin-left: 18px;
+
+}

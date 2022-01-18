@@ -1,16 +1,33 @@
 import React, { useState } from "react";
 import '../Styles/CreoStoryMakerStyles.css'
 
+var is_loaded = false
+var current_choice_id = 121421
+
 
 function CreoStoryMaker() {
     const [required_info_submited, set_required_info_submited] = useState(false)
     const [current_action_type, set_current_action_type] = useState("dialog")
     const [required_gamedata, set_required_gamedata] = useState(undefined)
-
     const [story_data, set_story_data] = useState({"act_one": [{"scene_one": []  }, {"scene_two": []  }], "act_two": [{"ending": []  }] })
     const [current_act, set_current_act] = useState("act_one")
     const [current_scene, set_current_scene] = useState("scene_one")
+    const [choices, update_choices] = useState({"121421": [{"choice_text_id": "21321312", "choice_scene_id": "213213123", "choice_text": "", "choice_scene": ""}, {"choice_text_id": "21312", "choice_scene_id": "2123", "choice_text": "", "choice_scene": ""}] })
 
+
+    if (is_loaded === false) {
+        setTimeout(load_story_data_locally, 1000)
+        is_loaded = true
+    }
+
+    function load_story_data_locally() {
+        
+    }
+
+    function save_data_locally() {
+
+    }
+    
 
     function put_all_acts_onto_list() {
         let to_return = []
@@ -116,7 +133,7 @@ function CreoStoryMaker() {
                     if (act_index === current_scene) {
                         for (let scene_index in story_data[current_act][index][current_scene]) {
                             if (story_data[current_act][index][current_scene][scene_index]["action_id"] === updated_action["action_id"]) {
-                                console.log(story_data[current_act][index][current_scene])
+                                //console.log(story_data[current_act][index][current_scene])
 
                                 let current_scene_index = parseInt(scene_index ,10)
                                 let new_scene_index = parseInt(scene_index ,10) + 1
@@ -305,15 +322,6 @@ function move_action_up_in_scene(updated_action) {
             start_force_update(force_update+1)
         }
 
-        if (action_type === "choice_action_choice") {
-            let choice_one_text = document.getElementById("choice_action_choice_one_text").value
-            let choice_two_text = document.getElementById("choice_action_choice_two_text").value
-            let choice_one_scene = document.getElementById("choice_action_choice_one_scene").value
-            let choice_two_scene = document.getElementById("choice_action_choice_two_scene").value
-            add_action_data_to_scene({"choice_one_text": choice_one_text, "choice_two_text": choice_two_text, "choice_one_scene": choice_one_scene, "choice_two_scene": choice_two_scene, "action_id": Math.random().toString(20).substring(2, 10) + Math.random().toString(20).substring(2, 10), "type": "choice_action_choice"}) 
-            start_force_update(force_update+1)
-        }
-
         if (action_type === "influence_action_add_or_remove_influence") {
             let character = document.getElementById("influence_action_add_or_remove_influence_character").value
             let amount = document.getElementById("influence_action_add_or_remove_influence_amount").value
@@ -362,14 +370,17 @@ function move_action_up_in_scene(updated_action) {
                 }
             }
         }
+
         //console.log(data_to_return)
         return data_to_return      
     }
 
 
-
+    
     function CreateEditableActionFromType(action_data) {
+
         var obj = JSON.parse(required_gamedata.replace(/'/g, '"'));   
+        //var obj = JSON.parse(localStorage.getItem('required_gamedata'))
         //console.log(action_data)
 
         if (action_data.data["type"] === "dialog") {
@@ -541,45 +552,57 @@ function move_action_up_in_scene(updated_action) {
             }
 
             if (action_data.data["type"] === "choice_action_choice") {
+
+                console.log(action_data.data)
+                
                 return(
-                    <div style={{minHeight: "300px"}} className="small_actions_background_container">
+                    <div style={{minHeight: "350px"}} className="small_actions_background_container">
                             <h2> Choice </h2>
 
-                            <div>
-                                <h2> Choice One </h2> 
-                                <input onChange={(event) => action_data.data["choice_one_text"] = event.target.value}  defaultValue={action_data.data["choice_one_text"]} type={"text"} style={{minWidth: "215px"}}/>
-                            </div>
+                            <div id="parent_container" className="ChoiceTestParentContainer">
+                                {choices[action_data.data["choice_id"]].map((element, index) => 
 
-                            <div>
-                                <h2> Choice Two </h2>
-                                <input onChange={(event) => action_data.data["choice_two_text"] = event.target.value}  defaultValue={action_data.data["choice_two_text"]} type={"text"} style={{minWidth: "215px"}}/>
-                            </div>
+                                    <div>
+                                        <div style={{"display": "flex", flexDirection: "column"}}>
+                                            
+                                            <div style={{width: "300px", "minHeight": "100px", "marginBottom": "10px", display: "flex", flexDirection: "column", marginTop: "50px", justifyContent: 'center'}}>
+                                                
+                                                <div>
+                                                    <h4>choice text </h4> 
+                                                    <input onChange={(event) => {action_data.data["choices"][index]["choice_text"] = event.target.value; update_choice_option_data(action_data.data["choice_id"], action_data.data["choices"])}} defaultValue={choices[action_data.data["choice_id"]][index]["choice_text"]} id={element["choice_text_id"]} type={"text"}/>
+                                                </div>
 
-                            <div>
-                                <h2> Choice One Scene </h2>
-                                <select onChange={(event) => action_data.data["choice_one_scene"] = event.target.value} defaultValue={action_data.data["choice_one_scene"]}>
-                                    {return_all_scenes_list().map(Element =>
-                                        <option key={Element} value={Element}> {Element} </option>
-                                    )}
-                                </select>
-                            </div>
+                                                <div> 
+                                                    <h4> choice scene </h4>
+                                                    <select onChange={(event) => {action_data.data["choices"][index]["choice_scene"] = event.target.value; ; update_choice_option_data(action_data.data["choice_id"], action_data.data["choices"])}} defaultValue={choices[action_data.data["choice_id"]][index]["choice_scene"]} id={element["choice_scene_id"]}>
 
-                            <div>
-                                <h2> Choice Two Scene </h2>
-                                <select onChange={(event) => action_data.data["choice_two_scene"] = event.target.value} defaultValue={action_data.data["choice_two_scene"]}>
-                                    {return_all_scenes_list().map(Element =>
-                                        <option key={Element} value={Element}> {Element} </option>
-                                    )}
-                                </select>
-                            </div>
+                                                        {return_all_scenes_list().map(element =>
+                                                            <option value={element}> {element} </option>    
+                                                        )}
+                                                    </select>
+                                                </div>
 
+                                        </div>
+
+                                    </div>
+
+                                        <button onClick={() => remove_choice(element["choice_text_id"], action_data.data["choice_id"] )}> remove choice </button>
+                                    </div>
+                                    
+                                )}
+
+                            </div>
+                            
+
+                            <button style={{"marginTop": "20px"}} onClick={() => add_choice(action_data.data["choice_id"])}> add choice  </button>
+                            
                             <div className="edit_action_buttons_container">
                                 <button onClick={() => update_action_in_scene(action_data.data)}> update </button>
                                 <button onClick={() => remove_action_from_scene(action_data.data["action_id"])}> remove </button>
                                 <button onClick={() => move_action_up_in_scene(action_data.data)}> move up </button>
                                 <button onClick={() => move_action_down_in_scene(action_data.data)}> move down</button>
-                            </div>
-
+                            </div>  
+                       
                         </div>
                 )
         }
@@ -700,6 +723,7 @@ function move_action_up_in_scene(updated_action) {
         if (required_gamedata !== undefined) {
 
             var obj = JSON.parse(required_gamedata.replace(/'/g, '"'));      
+            //var obj = JSON.parse(localStorage.getItem('required_gamedata'))
 
             if (current_action_type === "dialog") {
                 return(
@@ -891,36 +915,43 @@ function move_action_up_in_scene(updated_action) {
                         <div className="small_actions_background_container">
                             <h2> Choice </h2>
 
-                            <div>
-                                <h2> Choice One </h2> 
-                                <input style={{minWidth: "215px"}} id="choice_action_choice_one_text" type={"text"} />
+                            <div id="parent_container" className="ChoiceTestParentContainer">
+                                {choices[current_choice_id].map(element => 
+
+                                    <div>
+                                        <div style={{"display": "flex", flexDirection: "column"}}>
+                                            
+                                            <div style={{width: "300px", "minHeight": "100px", "marginBottom": "10px", display: "flex", flexDirection: "column", marginTop: "50px", justifyContent: 'center'}}>
+                                                
+                                                <div>
+                                                    <h4>choice text </h4> 
+                                                    <input id={element["choice_text_id"]} type={"text"}/>
+                                                </div>
+
+                                                <div> 
+                                                    <h4> choice scene </h4>
+                                                    <select id={element["choice_scene_id"]}>
+
+                                                        {return_all_scenes_list().map(element =>
+                                                            <option value={element}> {element} </option>    
+                                                        )}
+                                                    </select>
+                                                </div>
+
+                                        </div>
+
+                                    </div>
+
+                                        <button onClick={() => remove_choice(element["choice_text_id"], current_choice_id )}> remove choice </button>
+                                    </div>
+                                    
+                                )}
+
                             </div>
 
-                            <div>
-                                <h2> Choice Two </h2>
-                                <input style={{minWidth: "220px"}} id="choice_action_choice_two_text" type={"text"} />
-                            </div>
-
-                            <div>
-                                <h2> Choice One Scene </h2>
-                                <select id="choice_action_choice_one_scene">
-                                    {return_all_scenes_list().map(Element =>
-                                        <option key={Element} value={Element}> {Element} </option>
-                                    )}
-                                </select>
-                            </div>
-
-                            <div>
-                                <h2> Choice Two Scene </h2>
-                                <select id="choice_action_choice_two_scene">
-                                    {return_all_scenes_list().map(Element =>
-                                        <option key={Element} value={Element}> {Element} </option>
-                                    )}
-                                </select>
-                            </div>
-
-                            <button onClick={() => get_action_data_and_send_it_to_be_added_to_scene("choice_action_choice")}> add action </button>
-
+                            <button style={{"marginTop": "20px"}} onClick={() => add_choice( current_choice_id )}> add choice  </button>
+                            <button onClick={() => add_choice_action()}> add action </button>   
+                       
                         </div>
 
                     </div>
@@ -1031,6 +1062,63 @@ function move_action_up_in_scene(updated_action) {
     }
 
 
+    function return_random_id() {
+        return Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+    }
+    
+
+    function add_choice_action() {
+        let new_choice_id = current_choice_id
+
+        let choice_data = {"choices": [], "choice_id": new_choice_id, "action_id": Math.random().toString(20).substring(2, 10) + Math.random().toString(20).substring(2, 10), "type": "choice_action_choice"}
+        
+        if (choices[current_choice_id].length > 1) {
+            let choices_list = choices[current_choice_id]
+                for (let i in choices_list) {
+                    choice_data["choices"].push({"choice_text": document.getElementById(choices_list[i]["choice_text_id"]).value, "choice_scene": document.getElementById(choices_list[i]["choice_scene_id"]).value})
+                }
+        }
+
+        add_action_data_to_scene(choice_data) 
+
+        let new_choice_action_id = return_random_id()
+        let choice_id_to_add = choices
+        update_choice_option_data(current_choice_id, choice_data["choices"])
+        
+        choice_id_to_add[new_choice_action_id] = [{"choice_text_id": return_random_id(), "choice_scene_id": return_random_id(), "choice_text": "", "choice_scene": ""}, {"choice_text_id": return_random_id(), "choice_scene_id": return_random_id(), "choice_text": "", "choice_scene": ""}]
+        current_choice_id = new_choice_action_id
+
+        start_force_update(force_update+1)
+    }
+
+
+    function remove_choice(choice_text_id, choice_id) {
+        let data_to_return = choices
+        for (let i in data_to_return[choice_id]) {
+            if (data_to_return[choice_id][i]["choice_text_id"] === choice_text_id) {
+                data_to_return[choice_id].splice(i, 1);
+            }
+        }
+        update_choices(data_to_return)
+        start_force_update(force_update+1)
+    }
+    
+    function add_choice(sent_choice_id) {
+        let add_choice_to_scene_id = choices
+        add_choice_to_scene_id[sent_choice_id].push({"choice_text_id": return_random_id(), "choice_scene_id": return_random_id(), "choice_text": "", "choice_scene": ""})
+        update_choices(add_choice_to_scene_id)
+        start_force_update(force_update+1)
+    }
+
+    function update_choice_option_data(choice_id, choice_list) {
+        let updated_data = choices
+        updated_data[choice_id] = choice_list
+        update_choices(updated_data)
+    }
+
+
+
+
 
     return (
         <div className="Creo_Story_Maker_Container">
@@ -1039,7 +1127,7 @@ function move_action_up_in_scene(updated_action) {
 
             <div className="navbar_container">
                 <button onClick={() => set_required_info_submited(false)}> resubmit game data </button>
-                <button> documentation</button>
+                <button onClick={() => save_data_locally()}> Load Data </button>
                 <button onClick={() => navigator.clipboard.writeText("[b][/b]")}> Bold Text </button>
                 <button onClick={() => navigator.clipboard.writeText("[wave amp=50 freq=2][/wave]")}> Wavy Text </button>
                 <button onClick={() => navigator.clipboard.writeText("[tornado radius=5 freq=2][/tornado]")}> Tornado Text </button>
