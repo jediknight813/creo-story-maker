@@ -594,7 +594,7 @@ function move_action_up_in_scene(updated_action) {
                             </div>
                             
 
-                            <button style={{"marginTop": "20px"}} onClick={() => add_choice(action_data.data["choice_id"])}> add choice  </button>
+                            <button style={{"marginTop": "20px", zIndex:"5"}} onClick={() => add_choice(action_data.data["choice_id"])}> add choice  </button>
                             
                             <div className="edit_action_buttons_container">
                                 <button onClick={() => update_action_in_scene(action_data.data)}> update </button>
