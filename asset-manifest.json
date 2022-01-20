@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/creo-story-maker/static/css/main.b13bb894.css",
-    "main.js": "/creo-story-maker/static/js/main.cffb78b7.js",
+    "main.css": "/creo-story-maker/static/css/main.841f3f9c.css",
+    "main.js": "/creo-story-maker/static/js/main.e4ef7e27.js",
     "index.html": "/creo-story-maker/index.html",
-    "main.b13bb894.css.map": "/creo-story-maker/static/css/main.b13bb894.css.map",
-    "main.cffb78b7.js.map": "/creo-story-maker/static/js/main.cffb78b7.js.map"
+    "main.841f3f9c.css.map": "/creo-story-maker/static/css/main.841f3f9c.css.map",
+    "main.e4ef7e27.js.map": "/creo-story-maker/static/js/main.e4ef7e27.js.map"
   },
   "entrypoints": [
-    "static/css/main.b13bb894.css",
-    "static/js/main.cffb78b7.js"
+    "static/css/main.841f3f9c.css",
+    "static/js/main.e4ef7e27.js"
   ]
 }
